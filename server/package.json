@@ -1,0 +1,28 @@
+{
+   "name": "expense-tracker-server",
+   "version": "1.0.0",
+   "description": "The server for an application for tracking your daily expenses",
+   "main": "app.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "nodemon app.js"
+   },
+   "keywords": [
+      "expense",
+      "tracker",
+      "expense",
+      "tracker"
+   ],
+   "author": "Sangkpbown Fifafamiyan Possible",
+   "license": "ISC",
+   "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "dotenv": "^10.0.0",
+      "express": "^4.17.1",
+      "jest-haste-map": "^27.4.1",
+      "mongoose": "^6.0.14",
+      "multer": "^1.4.4",
+      "nodemon": "^2.0.14",
+      "watchman": "^1.0.0"
+   }
+}
