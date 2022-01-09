@@ -19,9 +19,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Moment from "moment";
 import Lodash from "lodash";
+import { Provider } from "react-native-paper";
 
 import RecordHeader from "../headers/RecordHeader";
 import HistorySlot from "../subComponents/HistorySlot";
+
+import FloatButton from "../buttons/FloatButton";
 
 export default function Records({ navigation }) {
    const [currentAccount, setCurrentAccount] = useState(null);
@@ -203,60 +206,65 @@ export default function Records({ navigation }) {
    });
 
    return (
-      <ScrollView>
-         <View style={styles.container}>
-            <RecordHeader
-               navigation={navigation}
-               openModal={handleModal}
-               total={
-                  currentAccount === null ? totalHistory : filteredTotalHistory
-               }
-               currentAccount={
-                  currentAccount === null
-                     ? "ALL RECORDS"
-                     : currentAccount[0].toUpperCase()
-               }
-            />
+      <Provider>
+         <ScrollView>
+            <View style={styles.container}>
+               <RecordHeader
+                  navigation={navigation}
+                  openModal={handleModal}
+                  total={
+                     currentAccount === null
+                        ? totalHistory
+                        : filteredTotalHistory
+                  }
+                  currentAccount={
+                     currentAccount === null
+                        ? "ALL RECORDS"
+                        : currentAccount[0].toUpperCase()
+                  }
+               />
 
-            {historyData}
+               {historyData}
 
-            <View style={styles.centeredView}>
-               <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-               >
-                  <View style={styles.centeredView}>
-                     <View style={styles.modalView}>
-                        <Text style={[styles.textLarge, styles.textBold]}>
-                           Choose Account
-                        </Text>
-                        {accountList}
-                        <Text
-                           onPress={() => {
-                              setCurrentAccount(null);
-                              setDataLoaded(false);
-                              setModalVisible(false);
-                           }}
-                           style={styles.all}
-                        >
-                           All Accounts
-                        </Text>
-
-                        <View style={styles.buttonView}>
-                           <TouchableOpacity
-                              style={styles.closeButton}
-                              onPress={handleModal}
+               <View style={styles.centeredView}>
+                  <Modal
+                     animationType="slide"
+                     transparent={true}
+                     visible={modalVisible}
+                  >
+                     <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                           <Text style={[styles.textLarge, styles.textBold]}>
+                              Choose Account
+                           </Text>
+                           {accountList}
+                           <Text
+                              onPress={() => {
+                                 setCurrentAccount(null);
+                                 setDataLoaded(false);
+                                 setModalVisible(false);
+                              }}
+                              style={styles.all}
                            >
-                              <Text style={styles.buttonText}>Close</Text>
-                           </TouchableOpacity>
+                              All Accounts
+                           </Text>
+
+                           <View style={styles.buttonView}>
+                              <TouchableOpacity
+                                 style={styles.closeButton}
+                                 onPress={handleModal}
+                              >
+                                 <Text style={styles.buttonText}>Close</Text>
+                              </TouchableOpacity>
+                           </View>
                         </View>
                      </View>
-                  </View>
-               </Modal>
+                  </Modal>
+               </View>
+               <FloatButton navigation={navigation} />
             </View>
-         </View>
-      </ScrollView>
+         </ScrollView>
+      </Provider>
    );
 }
 

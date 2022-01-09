@@ -23,12 +23,17 @@ export default class HistorySlot extends Component {
                         style={[
                            styles.textMedium,
                            styles.textBold,
-                           { marginRight: 30 },
+                           { marginRight: 30, width: 150 },
                         ]}
                      >
                         {category}
                      </Text>
-                     <Text style={[{ color: typeColor }, styles.textBold]}>
+                     <Text
+                        style={[
+                           { color: typeColor, width: 90 },
+                           styles.textBold,
+                        ]}
+                     >
                         {"NGN " + amount}
                      </Text>
                   </View>

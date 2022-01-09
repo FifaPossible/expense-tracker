@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
    View,
    Text,
@@ -6,6 +6,7 @@ import {
    StyleSheet,
    TextInput,
    ScrollView,
+   ActivityIndicator,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +22,7 @@ export default function NewAccount({ navigation }) {
    const [balance, setBalance] = useState(null);
    const [successMessage, setSuccessMessage] = useState("");
    const [success, setSuccess] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
 
    const [error, setError] = useState(false);
    const [validationErrors, setValidationErrors] = useState("");
@@ -51,29 +53,49 @@ export default function NewAccount({ navigation }) {
    const user = useSelector((state) => state.user.user);
 
    const save = async () => {
-      const credentials = {
-         user: user._id,
-         name,
-         balance,
-         currency: "NGN",
-         color: colorValue,
-      };
-
-      try {
-         const res = await Axios.post(serverUrl + "/addAccount", credentials);
-         if (res.data.status === "success") {
-            setSuccess(true);
-            setSuccessMessage("Account created successfully");
-            dispatch(pushedToAccounts(res.data.account));
-            setTimeout(() => {
-               navigation.navigate("Home");
-            }, 2000);
-         }
-      } catch (err) {
+      if (name === "") {
          setError(true);
-         setValidationErrors(
-            "Oops! Could not connect to server, check your internet connection"
-         );
+         setValidationErrors("Account name field is required");
+      } else if (balance === null) {
+         setError(true);
+         setValidationErrors("Balance filed is required");
+      } else if (colorValue === null) {
+         setError(true);
+         setValidationErrors("select a color");
+      } else {
+         const credentials = {
+            user: user._id,
+            name,
+            balance,
+            currency: "NGN",
+            color: colorValue,
+         };
+
+         setError(false);
+         setIsLoading(true);
+
+         try {
+            const res = await Axios.post(
+               serverUrl + "/addAccount",
+               credentials
+            );
+            if (res.data.status === "success") {
+               setIsLoading(false);
+               setSuccess(true);
+               setError(false);
+               setSuccessMessage("Account created successfully");
+               dispatch(pushedToAccounts(res.data.account));
+               setTimeout(() => {
+                  navigation.navigate("Home");
+               }, 2000);
+            }
+         } catch (err) {
+            setIsLoading(false);
+            setError(true);
+            setValidationErrors(
+               "Oops! Could not connect to server, check your internet connection"
+            );
+         }
       }
    };
 
@@ -92,6 +114,9 @@ export default function NewAccount({ navigation }) {
 
             <View style={styles.miniContainer2}>
                <View>
+                  {isLoading && (
+                     <ActivityIndicator size="small" color={colors.secondary} />
+                  )}
                   {error && (
                      <Text style={styles.error}>{validationErrors}</Text>
                   )}
@@ -100,12 +125,17 @@ export default function NewAccount({ navigation }) {
                   )}
                </View>
                <Text style={styles.text}>Account name</Text>
-               <TextInput style={styles.textInput} onChangeText={updateName} />
+               <TextInput
+                  style={styles.textInput}
+                  onChangeText={updateName}
+                  value={name}
+               />
                <Text style={styles.text}>Account Balance</Text>
                <TextInput
                   style={styles.textInput}
                   onChangeText={updateBalance}
                   keyboardType="numeric"
+                  value={balance}
                />
                <Text style={styles.text}>Color</Text>
                <DropDown

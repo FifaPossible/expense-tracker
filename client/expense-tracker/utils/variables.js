@@ -21,7 +21,4 @@ export const sizes = {
    inputHeight: 50,
 };
 
-export const serverUrl =
-   Platform.OS === "android"
-      ? "http://192.168.43.206:30000"
-      : "http://localhost:30000";
+export const serverUrl = "https://possible-expense-tracker.herokuapp.com";

@@ -12,14 +12,10 @@ const AccountCard = ({
 }) => {
    return (
       <View style={[styling, { backgroundColor }]}>
-         <TouchableOpacity>
-            <Text style={[styles.textWhite, styles.smallText]}>
-               {accountName}
-            </Text>
-            <Text style={[styles.textWhite, styles.font]}>
-               {currency} {accountBalance}
-            </Text>
-         </TouchableOpacity>
+         <Text style={[styles.textWhite, styles.smallText]}>{accountName}</Text>
+         <Text style={[styles.textWhite, styles.font]}>
+            {currency} {accountBalance}
+         </Text>
       </View>
    );
 };

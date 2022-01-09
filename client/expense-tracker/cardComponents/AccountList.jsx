@@ -33,7 +33,6 @@ export default function AccountList({ navigation }) {
    };
 
    const accountList = accounts.map((account) => {
-      const handleCardPress = () => {};
       return {
          backgroundColor: account.color,
          styling: styles.accountDetailsCard,
@@ -74,12 +73,12 @@ export default function AccountList({ navigation }) {
                         { user }
                      );
                      dispatch(accountsUpdated(fetchedAccount.data.accounts));
-                     setModalVisible(false);
                      setSuccess(true);
                      setSuccessMessage(res.data);
                      setTimeout(() => {
                         setSuccess(false);
-                     }, 6000);
+                        setModalVisible(false);
+                     }, 2000);
                   }
                } catch (e) {
                   console.log(e);
@@ -107,8 +106,6 @@ export default function AccountList({ navigation }) {
                </View>
             </TouchableOpacity>
          </View>
-
-         {success && <Text style={styles.success}>{successMessage}</Text>}
 
          <FlatList
             data={accountList}
@@ -148,6 +145,9 @@ export default function AccountList({ navigation }) {
                      <Text style={[styles.textLarge, styles.textBold]}>
                         Choose account to delete
                      </Text>
+                     {success && (
+                        <Text style={styles.success}>{successMessage}</Text>
+                     )}
                      {chooseAccount}
                      <View style={styles.buttonView}>
                         <TouchableOpacity

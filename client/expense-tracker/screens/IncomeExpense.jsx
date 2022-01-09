@@ -7,6 +7,7 @@ import {
    StatusBar,
    TextInput,
    ScrollView,
+   ActivityIndicator,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -18,11 +19,13 @@ import DropDown from "../inputs/DropDown";
 import { accountsUpdated } from "../reducers/accountSlice";
 import { incomeExpenseUpdated } from "../reducers/incomeExpenseSlice";
 import { historyUpdated } from "../reducers/historySlice";
+Axios.defaults.timeout === 3000;
 
 export default function ExportImport({ navigation }) {
    const [amount, setAmount] = useState(null);
    const [message, setMessage] = useState("");
    const [updated, setUpdated] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
 
    const dispatch = useDispatch();
 
@@ -98,6 +101,7 @@ export default function ExportImport({ navigation }) {
          }, 6000);
       } else {
          setError(false);
+         setIsLoading(true);
          const credentials = {
             amount,
             type: typeValue,
@@ -115,52 +119,58 @@ export default function ExportImport({ navigation }) {
             );
             if (res.data.status === "success") {
                setUpdated(true);
-               setMessage("Record updated successfully");
+
                const update = await Axios.post(
                   serverUrl + "/updateBalance",
                   credentials
                );
             }
          } catch (e) {
+            console.log(e);
+            setIsLoading(false);
             setError(true);
             setValidationErrors(
                "Oops! Could not connect to server, check your internet connection"
             );
+            setTimeout(() => {
+               setError(false);
+            }, 6000);
          }
       }
    };
 
-   useEffect(() => {
+   useEffect(async () => {
       if (updated) {
-         setTimeout(async () => {
-            try {
-               const fetchedAccounts = await Axios.post(
-                  serverUrl + "/findAllAccount",
-                  { user }
-               );
+         try {
+            const fetchedAccounts = await Axios.post(
+               serverUrl + "/findAllAccount",
+               { user }
+            );
 
-               const incomeExpense = await Axios.get(
-                  serverUrl + "/accountsArithmetics"
-               );
+            const incomeExpense = await Axios.get(
+               serverUrl + "/accountsArithmetics"
+            );
 
-               const history = await Axios.get(
-                  serverUrl + "/historyArithmetics"
-               );
-            } catch (err) {
-               setError(true);
-               setValidationErrors(
-                  "Oops! Could not connect to server, check your internet connection"
-               );
-               setTimeout(() => {
-                  setError(false);
-               }, 6000);
-            }
+            const history = await Axios.get(serverUrl + "/historyArithmetics");
 
             dispatch(accountsUpdated(fetchedAccounts.data.accounts));
             dispatch(incomeExpenseUpdated(incomeExpense.data));
             dispatch(historyUpdated(history.data));
-            navigation.navigate("Home");
-         }, 2000);
+            setIsLoading(false);
+            setMessage("Record updated successfully");
+            setTimeout(() => {
+               navigation.navigate("Home");
+            }, 1000);
+         } catch (err) {
+            console.log("an error ocured");
+            setError(true);
+            setValidationErrors(
+               "Oops! Could not connect to server, check your internet connection"
+            );
+            setTimeout(() => {
+               setError(false);
+            }, 6000);
+         }
       }
    }, [updated]);
 
@@ -189,6 +199,9 @@ export default function ExportImport({ navigation }) {
             </View>
 
             <View>
+               {isLoading && (
+                  <ActivityIndicator size="small" color={colors.secondary} />
+               )}
                {error && <Text style={styles.error}>{validationErrors}</Text>}
                {updated && <Text style={styles.updated}>{message}</Text>}
                <Text style={styles.text}>Amount</Text>
