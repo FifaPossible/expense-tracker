@@ -87,7 +87,8 @@ export default function UserProfile({ navigation }) {
          try {
             const res = await axios.post(
                serverUrl + "/changePassword",
-               credentials
+               credentials,
+               { timeout: 8000 }
             );
             if (res.status === 201) {
                setError(true);
@@ -159,6 +160,7 @@ export default function UserProfile({ navigation }) {
                         Accept: "application/json",
                         "Content-Type": "multipart/form-data",
                      },
+                     timeout: 8000,
                   }
                );
                const userObject = res.data;

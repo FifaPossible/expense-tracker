@@ -19,7 +19,6 @@ import DropDown from "../inputs/DropDown";
 import { accountsUpdated } from "../reducers/accountSlice";
 import { incomeExpenseUpdated } from "../reducers/incomeExpenseSlice";
 import { historyUpdated } from "../reducers/historySlice";
-Axios.defaults.timeout === 3000;
 
 export default function ExportImport({ navigation }) {
    const [amount, setAmount] = useState(null);
@@ -115,14 +114,16 @@ export default function ExportImport({ navigation }) {
          try {
             const res = await Axios.post(
                serverUrl + "/addIncomeExpense",
-               credentials
+               credentials,
+               { timeout: 8000 }
             );
             if (res.data.status === "success") {
                setUpdated(true);
 
                const update = await Axios.post(
                   serverUrl + "/updateBalance",
-                  credentials
+                  credentials,
+                  { timeout: 8000 }
                );
             }
          } catch (e) {
@@ -144,14 +145,18 @@ export default function ExportImport({ navigation }) {
          try {
             const fetchedAccounts = await Axios.post(
                serverUrl + "/findAllAccount",
-               { user }
+               { user },
+               { timeout: 8000 }
             );
 
             const incomeExpense = await Axios.get(
-               serverUrl + "/accountsArithmetics"
+               serverUrl + "/accountsArithmetics",
+               { timeout: 8000 }
             );
 
-            const history = await Axios.get(serverUrl + "/historyArithmetics");
+            const history = await Axios.get(serverUrl + "/historyArithmetics", {
+               timeout: 8000,
+            });
 
             dispatch(accountsUpdated(fetchedAccounts.data.accounts));
             dispatch(incomeExpenseUpdated(incomeExpense.data));

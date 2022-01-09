@@ -58,7 +58,9 @@ export default function Login({ navigation }) {
 
          try {
             setIsLoading(true);
-            const res = await Axios.post(serverUrl + "/login", credentials);
+            const res = await Axios.post(serverUrl + "/login", credentials, {
+               timeout: 8000,
+            });
 
             if (res.data.status === "noUser") {
                setIsLoading(false);

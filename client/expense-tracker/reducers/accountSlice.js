@@ -10,7 +10,8 @@ export const fetchAccounts = createAsyncThunk(
       try {
          const res = await Axios.post(
             serverUrl + "/findAllAccount",
-            credentials
+            credentials,
+            { timeout: 8000 }
          );
          if (res.data.status === "success") {
             return res.data.accounts;

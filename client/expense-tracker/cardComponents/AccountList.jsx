@@ -65,12 +65,14 @@ export default function AccountList({ navigation }) {
                try {
                   const res = await axios.post(
                      serverUrl + "/deleteAccount",
-                     credential
+                     credential,
+                     { timeout: 8000 }
                   );
                   if (res.status === 200) {
                      const fetchedAccount = await axios.post(
                         serverUrl + "/findAllAccount",
-                        { user }
+                        { user },
+                        { timeout: 8000 }
                      );
                      dispatch(accountsUpdated(fetchedAccount.data.accounts));
                      setSuccess(true);

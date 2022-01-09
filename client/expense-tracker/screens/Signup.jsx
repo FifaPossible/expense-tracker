@@ -87,7 +87,11 @@ export default function Signup({ navigation }) {
                };
 
                setIsLoading(true);
-               const res = await Axios.post(serverUrl + "/signup", credentials);
+               const res = await Axios.post(
+                  serverUrl + "/signup",
+                  credentials,
+                  { timeout: 8000 }
+               );
                if (res.data.status === "success") {
                   dispatch(userLoggedIn(res.data.user));
                   const user = res.data.user;

@@ -77,7 +77,8 @@ export default function NewAccount({ navigation }) {
          try {
             const res = await Axios.post(
                serverUrl + "/addAccount",
-               credentials
+               credentials,
+               { timeout: 8000 }
             );
             if (res.data.status === "success") {
                setIsLoading(false);

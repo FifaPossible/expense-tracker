@@ -8,7 +8,9 @@ export const fetchIncomeExpense = createAsyncThunk(
    "incomeExpense/incomeExpenseFetched",
    async () => {
       try {
-         const res = await Axios.get(serverUrl + "/accountsArithmetics");
+         const res = await Axios.get(serverUrl + "/accountsArithmetics", {
+            timeout: 8000,
+         });
          if (res.status === 200) {
             return res.data;
          } else return { error: "An error occurred" };
