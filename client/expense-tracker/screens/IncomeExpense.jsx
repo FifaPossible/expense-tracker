@@ -127,7 +127,6 @@ export default function ExportImport({ navigation }) {
                );
             }
          } catch (e) {
-            console.log(e);
             setIsLoading(false);
             setError(true);
             setValidationErrors(
@@ -167,7 +166,6 @@ export default function ExportImport({ navigation }) {
                navigation.navigate("Home");
             }, 1000);
          } catch (err) {
-            console.log("an error ocured");
             setError(true);
             setValidationErrors(
                "Oops! Could not connect to server, check your internet connection"

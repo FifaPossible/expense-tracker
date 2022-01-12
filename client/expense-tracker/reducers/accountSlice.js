@@ -26,6 +26,9 @@ const accountSlice = createSlice({
    name: "accounts",
    initialState,
    reducers: {
+      accountsFetched(state, action) {
+         state.accounts = action.payload;
+      },
       pushedToAccounts(state, action) {
          state.accounts.push(action.payload);
       },
@@ -40,5 +43,6 @@ const accountSlice = createSlice({
    },
 });
 
-export const { pushedToAccounts, accountsUpdated } = accountSlice.actions;
+export const { accountsFetched, pushedToAccounts, accountsUpdated } =
+   accountSlice.actions;
 export default accountSlice.reducer;

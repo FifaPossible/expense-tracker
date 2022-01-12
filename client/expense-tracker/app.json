@@ -1,30 +1,33 @@
 {
-   "expo": {
-      "name": "expense tracker",
-      "slug": "expense-tracker",
-      "version": "1.0.0",
-      "orientation": "portrait",
-      "icon": "./assets/expense-tracker-icon.png",
-      "splash": {
-         "image": "./assets/expense-tracker-icon.png",
-         "resizeMode": "contain",
-         "backgroundColor": "#FFFFFF"
-      },
-      "updates": {
-         "fallbackToCacheTimeout": 0
-      },
-      "assetBundlePatterns": ["**/*"],
-      "ios": {
-         "supportsTablet": true
-      },
-      "android": {
-         "adaptiveIcon": {
-            "foregroundImage": "./assets/expense-tracker-icon.png",
-            "backgroundColor": "#FFFFFF"
-         }
-      },
-      "web": {
-         "favicon": "./assets/expense-tracker-icon.png"
+  "expo": {
+    "name": "expense tracker",
+    "slug": "expense-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/expense-tracker-icon.png",
+    "splash": {
+      "image": "./assets/expense-tracker-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/expense-tracker-icon.png",
+        "backgroundColor": "#FFFFFF"
       }
-   }
+    },
+    "web": {
+      "favicon": "./assets/expense-tracker-icon.png"
+    },
+    "description": "An application to monitor your expenses"
+  }
 }

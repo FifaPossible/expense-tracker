@@ -8,7 +8,6 @@ import { colors, serverUrl, sizes } from "../utils/variables";
 
 export default function HomeHeader({ navigation }) {
    const user = useSelector((state) => state.user.user);
-   console.log(user, user.profilePicture);
 
    const openDrawer = () => {
       navigation.openDrawer();

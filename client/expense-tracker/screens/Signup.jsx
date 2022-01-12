@@ -16,8 +16,9 @@ import FormTextInput from "../inputs/FormTextInput";
 import ActionButton from "../buttons/ActionButton";
 import { colors, serverUrl } from "../utils/variables";
 import { userLoggedIn } from "../reducers/userReducer";
-import { fetchAccounts } from "../reducers/accountSlice";
+import { accountsFetched } from "../reducers/accountSlice";
 import { fetchIncomeExpense } from "../reducers/incomeExpenseSlice";
+import { fetchHistory } from "../reducers/historySlice";
 
 export default function Signup({ navigation }) {
    const [username, setUsername] = useState("");
@@ -95,15 +96,25 @@ export default function Signup({ navigation }) {
                if (res.data.status === "success") {
                   dispatch(userLoggedIn(res.data.user));
                   const user = res.data.user;
-                  dispatch(fetchAccounts({ user }));
                   dispatch(fetchIncomeExpense());
-                  setTimeout(() => {
-                     setUsername("");
-                     setEmail("");
-                     setPassword("");
-                     setConfirmPassword("");
-                     navigation.navigate("Home page");
-                  }, 2000);
+                  dispatch(fetchHistory());
+                  const accountsFetchedRes = await Axios.post(
+                     serverUrl + "/findAllAccount",
+                     { user },
+                     { timeout: 8000 }
+                  );
+                  if (accountsFetchedRes.data.status === "success") {
+                     dispatch(
+                        accountsFetched(accountsFetchedRes.data.accounts)
+                     );
+                     setTimeout(() => {
+                        setUsername("");
+                        setEmail("");
+                        setPassword("");
+                        setConfirmPassword("");
+                        navigation.navigate("Home page");
+                     }, 2000);
+                  }
                } else if (res.status === 201) {
                   setIsLoading(false);
                   setError(true);
